@@ -8,7 +8,7 @@ export interface Bio {
 export interface CVItem {
   institution: string;
   period: string;
-  description: string;
+  description?: string;
 }
 
 export interface EducationItem extends CVItem {
@@ -48,6 +48,11 @@ export interface Publication extends BasePage {
   author?: string;
   journal?: string;
   external_url?: string;
+  code_url?: string;
+  project_url?: string;
+  highlight_author?: string;
+  image?: string;
+  image_alt?: string;
 }
 
 export interface Talk extends BasePage {

@@ -1,0 +1,55 @@
+---
+import { getEntry, render } from "astro:content";
+import Timeline from "../ui/Timeline.astro";
+const cvEntry = await getEntry("cv", "cv");
+if (!cvEntry) {
+    throw new Error(
+        "CV content not found. Please ensure src/content/cv.md exists.",
+    );
+}
+
+const { Content } = await render(cvEntry);
+const { experience = [], education = [] } = cvEntry.data;
+---
+
+<div class="mt-12">
+        {
+            experience.length > 0 && (
+                <section class="section">
+                    <h2 class="section-title border-b border-border pb-2">
+                        Professional Experience
+                    </h2>
+                    <Timeline items={experience.map(exp => ({
+                        title: exp.role,
+                        subtitle: exp.institution,
+                        period: exp.period,
+                        description: exp.description
+                    }))} />
+                </section>
+            )
+        }
+
+        {
+            education.length > 0 && (
+                <section class="section">
+                    <h2 class="section-title border-b border-border pb-2">
+                        Education
+                    </h2>
+                    <Timeline items={education.map(edu => ({
+                        title: edu.degree,
+                        subtitle: edu.institution,
+                        period: edu.period,
+                        description: edu.description,
+                        thesis: edu.thesis
+                    }))} />
+                </section>
+            )
+        }
+
+        <div class="prose max-w-none">
+            <Content />
+        </div>
+    </div>
+
+
+

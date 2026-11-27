@@ -1,5 +1,24 @@
 @import "tailwindcss";
 
+/* Publication rows: figures beside metadata, stacked on smaller screens. */
+.publication-list { display: grid; gap: 2.5rem; }
+.publication-card { display: grid; gap: 1.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--border); }
+.publication-card-with-image { grid-template-columns: minmax(0, 220px) minmax(0, 1fr); align-items: start; }
+.publication-image { width: 100%; aspect-ratio: 4 / 3; object-fit: contain; background: white; border: 1px solid var(--border); border-radius: 0.5rem; }
+.publication-title { font-size: 1.15rem; line-height: 1.5; font-weight: 700; }
+.publication-title a:hover { color: var(--accent); }
+.publication-authors { margin-top: 0.65rem; line-height: 1.7; }
+.publication-venue { margin-top: 0.35rem; }
+.publication-description { margin-top: 0.75rem; line-height: 1.7; color: var(--text-muted); }
+.publication-links { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; margin-top: 0.9rem; }
+.publication-links a { color: var(--accent); font-weight: 600; }
+.publication-links a:hover { text-decoration: underline; }
+.publication-card a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+@media (max-width: 640px) {
+    .publication-card-with-image { grid-template-columns: minmax(0, 1fr); }
+    .publication-image { max-width: 360px; }
+}
+
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 

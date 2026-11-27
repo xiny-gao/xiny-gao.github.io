@@ -1,0 +1,34 @@
+---
+import type { CollectionEntry } from "astro:content";
+interface Props { entry: CollectionEntry<"publications"> }
+const { entry } = Astro.props;
+const { data } = entry;
+const authors = data.author?.split(",").map(author => author.trim()) || [];
+const links = [
+    { label: "Paper", href: data.external_url },
+    { label: "Code", href: data.code_url },
+    { label: "Project Page", href: data.project_url },
+].filter(link => link.href);
+const titleHref = data.external_url || `/publications/${entry.id}`;
+---
+
+<article class:list={["publication-card", { "publication-card-with-image": data.image }]}>
+    {data.image && (
+        <img class="publication-image" src={data.image}
+            alt={data.image_alt || `Overview of ${data.title}`} loading="lazy" />
+    )}
+    <div class="min-w-0">
+        <h2 class="publication-title"><a href={titleHref}>{data.title}</a></h2>
+        {authors.length > 0 && <p class="publication-authors">
+            {authors.map((author, index) => <>
+                {index > 0 && ", "}
+                {author === data.highlight_author ? <strong>{author}</strong> : author}
+            </>)}
+        </p>}
+        {data.journal && <p class="publication-venue"><em>{data.journal}</em></p>}
+        {data.description && <p class="publication-description">{data.description}</p>}
+        {links.length > 0 && <div class="publication-links">
+            {links.map(link => <a href={link.href}>[{link.label}]</a>)}
+        </div>}
+    </div>
+</article>

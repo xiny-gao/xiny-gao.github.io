@@ -1,14 +1,23 @@
 ---
-import BaseListing from "../../layouts/BaseListing.astro";
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PublicationCard from "../../components/content/PublicationCard.astro";
 import { PAGES } from "../../config";
 
 if (PAGES.publications.isActive === false) {
     return Astro.redirect("/404");
 }
+const entries = (await getCollection("publications")).sort((a, b) =>
+    (Date.parse(b.data.date || "") || 0) - (Date.parse(a.data.date || "") || 0)
+);
 ---
 
-<BaseListing
-    collection="publications"
-    title={PAGES.publications.title}
-    subtitle={PAGES.publications.subtitle}
-/>
+<BaseLayout title={PAGES.publications.title}>
+    <header class="page-header">
+        <h1 class="page-title">{PAGES.publications.title}</h1>
+        {PAGES.publications.subtitle && <p class="page-subtitle">{PAGES.publications.subtitle}</p>}
+    </header>
+    <div class="publication-list">
+        {entries.map(entry => <PublicationCard entry={entry} />)}
+    </div>
+</BaseLayout>
